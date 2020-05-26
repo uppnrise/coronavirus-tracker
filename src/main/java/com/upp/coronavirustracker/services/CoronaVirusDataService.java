@@ -23,6 +23,10 @@ public class CoronaVirusDataService {
 
     private List<LocationStats> allStats = new ArrayList<>();
 
+    public List<LocationStats> getAllStats() {
+        return allStats;
+    }
+
     @PostConstruct
     @Scheduled(cron = "0 0 * ? * *") //Every hour - https://www.freeformatter.com/cron-expression-generator-quartz.html
     public void getVirusData() {
@@ -40,12 +44,20 @@ public class CoronaVirusDataService {
             Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(csvBodyReader);
             for (CSVRecord record : records) {
                 LocationStats locationStat = new LocationStats();
+
                 locationStat.setState(record.get("Province/State"));
                 locationStat.setCountry(record.get("Country/Region"));
-                locationStat.setLatestTotalCases(Integer.parseInt(record.get(record.size() - 1)));
-                System.out.println(locationStat);
 
+                int latestCases = Integer.parseInt(record.get(record.size() - 1));
+                int prevDayCases = Integer.parseInt(record.get(record.size() - 2));
+
+                locationStat.setLatestTotalCases(latestCases);
+                locationStat.setDiffFromPrevDay(latestCases - prevDayCases);
+
+                newStats.add(locationStat);
             }
+
+            this.allStats = newStats;
 
         } catch (IOException e) {
             e.printStackTrace();
