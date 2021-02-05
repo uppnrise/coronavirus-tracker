@@ -3,6 +3,7 @@ package com.upp.coronavirustracker.services;
 import com.upp.coronavirustracker.models.LocationStats;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,8 @@ import java.util.List;
 @Service
 public class CoronaVirusDataService {
 
-    private static String VIRUS_DATA_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
+    @Value("${c-tracker.virusDataUrl}")
+    private String VIRUS_DATA_URL;
 
     private List<LocationStats> allStats = new ArrayList<>();
 
@@ -28,7 +30,7 @@ public class CoronaVirusDataService {
     }
 
     @PostConstruct
-    @Scheduled(cron = "0 0 * ? * *") //Every hour - https://www.freeformatter.com/cron-expression-generator-quartz.html
+    @Scheduled(cron = "${c-tracker.cron}")
     public void getVirusData() {
 
         List<LocationStats> newStats = new ArrayList<>();
@@ -59,9 +61,7 @@ public class CoronaVirusDataService {
 
             this.allStats = newStats;
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
 
