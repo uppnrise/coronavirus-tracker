@@ -10,12 +10,12 @@
     </parent>
     <groupId>com.upp</groupId>
     <artifactId>coronavirus-tracker</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>coronavirus-tracker</name>
     <description>A simple web application to track coronavirus statistics around the world.</description>
 
     <properties>
-        <java.version>12</java.version>
+        <java.version>8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
     </properties>
