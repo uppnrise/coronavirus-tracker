@@ -2,7 +2,7 @@
 
 ## Introduction
 
-It's a simple coronavirus tracker application.
+It's a simple coronavirus tracker application. You can test it on [heroku-env](https://upp-coronavirus-tracker.herokuapp.com).
 
 * Spring Boot
 * Thymeleaf template engine
